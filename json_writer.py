@@ -1,10 +1,9 @@
 import json
 
-from matplotlib.font_manager import json_dump
 
-file_path = 'data/habits.py'
+file_path = 'data/habits.json'
 
 def add_habit(data):
     with open(file_path, 'w') as file:
-        json_dump(data, file)
+        json.dump(data, file)
         print(data)
