@@ -3,6 +3,6 @@ import json
 file_path = "data/habits.json"
 
 with open(file_path, 'r') as f:
-    data = json.load()
+    data = json.load(f)
 
 print(data)
