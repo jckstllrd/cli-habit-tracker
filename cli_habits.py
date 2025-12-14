@@ -9,4 +9,14 @@ parser.add_argument('-d','--done', nargs=1, help='This argument allows the user 
 parser.add_argument('-s','--status', action='store_true', help='This argument outputs the list of current habits/streaks')
 
 args = parser.parse_args()
-print(args)
+
+
+if(args.add):
+    print('adding habit')
+elif(args.done):
+    print('completed habit')
+elif(args.status):
+    print('printing status')
+    
+
+
