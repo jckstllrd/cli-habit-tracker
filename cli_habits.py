@@ -9,7 +9,9 @@ parser.add_argument('-d','--done', nargs=1, help='This argument allows the user 
 parser.add_argument('-s','--status', action='store_true', help='This argument outputs the list of current habits/streaks')
 
 args = parser.parse_args()
+habits = jr.load_habits()
 
+print(habits)
 
 if(args.add):
     print('adding habit')
