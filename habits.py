@@ -5,8 +5,9 @@ def create_habits():
         ]
     }
     return habits
+
     
-def add_habit(name):
+def new_habit(name):
     habit = {
         'name': f'{name}',
         'dates_completed': [],
