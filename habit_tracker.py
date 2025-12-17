@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 import json
 import os
 
@@ -67,12 +68,11 @@ if __name__ == '__main__':
         habit_name = args.add[0]
         habits_dict = create_habit(habit_name, habits_dict)
         print(habits_dict)
-    # elif(args.done):
-    #     now = datetime.now()
-    #     habit_name = args.done[0]
-    #     habit_entry = habits_dict[f'{habit_name}']
-    #     habit_entry['dates_completed'].append(f'{now}')
-    #     print(habit_entry)
+    elif(args.done):
+        now = datetime.now()
+        habit_name = args.done[0]
+        habit_entry = habits_dict[f'{habit_name}']
+        habits_dict[f'{habit_name}']['dates_completed'].append(f'{now}')
 
     # elif(args.status):
     #     print('printing status')
