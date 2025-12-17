@@ -37,12 +37,25 @@ def load_habits():
         else:
             print("File is NOT empty")
             # just load in the file
-            habits_dict = json.dump(file_path)
+            with open(file_path, 'r') as f:
+                habits_dict = json.load(f)
     except FileNotFoundError as e:
         print("File NOT found")
         # initialise new habits file
         habits_dict = initialise_habits()
     return habits_dict
+
+def create_habit(name, dict):
+        habit_data = {
+        'dates_completed': [],
+        }
+        dict[f'{name}'] = habit_data
+        return dict
+    
+def save_habits(habits_dict):
+    file_path = 'data/habits.json'
+    with open(file_path, 'w') as f:
+        json.dump(habits_dict, f, indent=4)
 
 if __name__ == '__main__':
     args = setup_args()
@@ -50,3 +63,17 @@ if __name__ == '__main__':
     print(args)
     
     
+    if(args.add):
+        habit_name = args.add[0]
+        habits_dict = create_habit(habit_name, habits_dict)
+        print(habits_dict)
+    # elif(args.done):
+    #     now = datetime.now()
+    #     habit_name = args.done[0]
+    #     habit_entry = habits_dict[f'{habit_name}']
+    #     habit_entry['dates_completed'].append(f'{now}')
+    #     print(habit_entry)
+
+    # elif(args.status):
+    #     print('printing status')
+    save_habits(habits_dict)
