@@ -32,16 +32,16 @@ def load_habits():
     try: 
         file_size = os.path.getsize(file_path)
         if file_size == 0:
-            print("File is empty")
+            # print("File is empty")
             # initialise new habits file
             habits_dict = initialise_habits()
         else:
-            print("File is NOT empty")
+            # print("File is NOT empty")
             # just load in the file
             with open(file_path, 'r') as f:
                 habits_dict = json.load(f)
     except FileNotFoundError as e:
-        print("File NOT found")
+        # print("File NOT found")
         # initialise new habits file
         habits_dict = initialise_habits()
     return habits_dict
@@ -61,19 +61,25 @@ def save_habits(habits_dict):
 if __name__ == '__main__':
     args = setup_args()
     habits_dict = load_habits()
-    print(args)
     
     
     if(args.add):
         habit_name = args.add[0]
         habits_dict = create_habit(habit_name, habits_dict)
-        print(habits_dict)
+        print("Habit added.")
+        
     elif(args.done):
         now = datetime.now()
         habit_name = args.done[0]
         habit_entry = habits_dict[f'{habit_name}']
         habits_dict[f'{habit_name}']['dates_completed'].append(f'{now}')
+        print("Well done on completing this today!")
+    elif(args.status):
 
-    # elif(args.status):
-    #     print('printing status')
+        with open('data/habits.json', 'r') as f:
+            json_obj = json.loads(f.read())
+        json_formatted_str = json.dumps(json_obj, indent=2)
+        print("The current habits and their status:\n\n")
+        print(json_formatted_str)
+    # Save all habits back the JSON file
     save_habits(habits_dict)
