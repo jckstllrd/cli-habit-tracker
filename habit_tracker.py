@@ -1,10 +1,9 @@
 import argparse
-from datetime import datetime
+from datetime import datetime, date, timedelta
+from hashlib import shake_128
 import json
 import os
-
-import habits
-
+import pandas as pd
 
 
 def setup_args():
@@ -49,14 +48,41 @@ def load_habits():
 def create_habit(name, dict):
         habit_data = {
         'dates_completed': [],
+        'current_streak': 0,
         }
         dict[f'{name}'] = habit_data
         return dict
+    
+def update_streaks(habits_dict):
+    for habit_name in habits_dict:
+        habit = habits_dict[habit_name]
+        current_streak = 0
+        sliding_date = date.today()
+        one_day = timedelta(days=1)
+        for date_entry in reversed(habit['dates_completed']):
+            
+            year, month, day = date_entry.split()
+            current_date = date(int(year), int(month), int(day))
+            diff = sliding_date - current_date
+            # print(f"current date: {current_date}")
+            # print(f"sliding date: {sliding_date}")
+            # print(f"Result of minusing: {diff}")
+            
+            if (diff > one_day):
+                break
+            elif (diff <= one_day):
+                
+                current_streak += 1
+                sliding_date = current_date
+                
+        habit["current_streak"] = current_streak
+    return  
     
 def save_habits(habits_dict):
     file_path = 'data/habits.json'
     with open(file_path, 'w') as f:
         json.dump(habits_dict, f, indent=4)
+
 
 if __name__ == '__main__':
     args = setup_args()
@@ -69,11 +95,20 @@ if __name__ == '__main__':
         print("Habit added.")
         
     elif(args.done):
-        now = datetime.now()
+        now = datetime.now().strftime(("%Y %m %d"))
         habit_name = args.done[0]
         habit_entry = habits_dict[f'{habit_name}']
-        habits_dict[f'{habit_name}']['dates_completed'].append(f'{now}')
-        print("Well done on completing this today!")
+        dates_completed_list = habits_dict[f'{habit_name}']['dates_completed']
+        added = False
+        if len(dates_completed_list) == 0:
+            print("Well done on completing this for the first time!")
+            dates_completed_list.append(f'{now}')
+            added = True
+        elif dates_completed_list[-1] == now:
+            print("You have already completed this habit today!")
+        else:
+            dates_completed_list.append(f'{now}')
+            print("Well done on completing this today!")
     elif(args.status):
 
         with open('data/habits.json', 'r') as f:
@@ -82,4 +117,5 @@ if __name__ == '__main__':
         print("The current habits and their status:\n\n")
         print(json_formatted_str)
     # Save all habits back the JSON file
+    update_streaks(habits_dict)
     save_habits(habits_dict)
