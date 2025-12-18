@@ -7,14 +7,16 @@
             "2025 12 13",
             "2025 12 15",
             "2025 12 16",
-            "2025 12 17"
+            "2025 12 17",
+            "2025 12 18"
         ],
-        "current_streak": 3
+        "current_streak": 4
     },
     "walking": {
         "dates_completed": [
-            "2025 12 17"
+            "2025 12 17",
+            "2025 12 18"
         ],
-        "current_streak": 1
+        "current_streak": 2
     }
 }
