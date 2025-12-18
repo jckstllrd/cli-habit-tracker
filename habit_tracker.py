@@ -110,16 +110,22 @@ def complete_habit(args):
         print("This habit doesn't exist, try creating it first with: -a [habit]")
 
 
+def add_habit(args, habits_dict):
+    habit_name = args.add[0]
+    habits_dict = create_habit(habit_name, habits_dict)
+    print("Habit added.")
+        
+
+
 if __name__ == '__main__':
     args = setup_args()
+    
+    # Load the JSON file
     habits_dict = load_habits()
     
-    
+    # Check which arguments were passed.
     if(args.add):
-        habit_name = args.add[0]
-        habits_dict = create_habit(habit_name, habits_dict)
-        print("Habit added.")
-        
+        add_habit(args, habits_dict)
     elif(args.done):
         complete_habit(args)
     elif(args.status):
