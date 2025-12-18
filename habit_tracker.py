@@ -90,6 +90,25 @@ def show_status():
     print("The current habits and their status:\n\n")
     print(json_formatted_str)
 
+def complete_habit(args):
+    now = datetime.now().strftime(("%Y %m %d"))
+    habit_name = args.done[0]
+    try:
+        habit_entry = habits_dict[f'{habit_name}']
+        dates_completed_list = habit_entry['dates_completed']
+        added = False
+        if len(dates_completed_list) == 0:
+            print("Well done on completing this for the first time!")
+            dates_completed_list.append(f'{now}')
+            added = True
+        elif dates_completed_list[-1] == now:
+            print("You have already completed this habit today!")
+        else:
+            dates_completed_list.append(f'{now}')
+            print("Well done on completing this today!")
+    except:
+        print("This habit doesn't exist, try creating it first with: -a [habit]")
+
 
 if __name__ == '__main__':
     args = setup_args()
@@ -102,23 +121,7 @@ if __name__ == '__main__':
         print("Habit added.")
         
     elif(args.done):
-        now = datetime.now().strftime(("%Y %m %d"))
-        habit_name = args.done[0]
-        try:
-            habit_entry = habits_dict[f'{habit_name}']
-            dates_completed_list = habits_dict[f'{habit_name}']['dates_completed']
-            added = False
-            if len(dates_completed_list) == 0:
-                print("Well done on completing this for the first time!")
-                dates_completed_list.append(f'{now}')
-                added = True
-            elif dates_completed_list[-1] == now:
-                print("You have already completed this habit today!")
-            else:
-                dates_completed_list.append(f'{now}')
-                print("Well done on completing this today!")
-        except:
-            print("This habit doesn't exist, try creating it first with: -a [habit]")
+        complete_habit(args)
     elif(args.status):
         show_status()
 
