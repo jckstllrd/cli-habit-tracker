@@ -82,6 +82,13 @@ def save_habits(habits_dict):
     file_path = 'data/habits.json'
     with open(file_path, 'w') as f:
         json.dump(habits_dict, f, indent=4)
+        
+def show_status():
+    with open('data/habits.json', 'r') as f:
+        json_obj = json.loads(f.read())
+    json_formatted_str = json.dumps(json_obj, indent=2)
+    print("The current habits and their status:\n\n")
+    print(json_formatted_str)
 
 
 if __name__ == '__main__':
@@ -113,12 +120,8 @@ if __name__ == '__main__':
         except:
             print("This habit doesn't exist, try creating it first with: -a [habit]")
     elif(args.status):
+        show_status()
 
-        with open('data/habits.json', 'r') as f:
-            json_obj = json.loads(f.read())
-        json_formatted_str = json.dumps(json_obj, indent=2)
-        print("The current habits and their status:\n\n")
-        print(json_formatted_str)
     # Save all habits back the JSON file
     update_streaks(habits_dict)
     save_habits(habits_dict)
